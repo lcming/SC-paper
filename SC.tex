@@ -32,7 +32,7 @@
 
 \begin{document}
 
-\title{Smart Interface: A Hardware Optimizer for Accelerating Heterogeneous Programming}
+\title{Smart Controller: A Hardware Optimizer for Accelerating Heterogeneous Programming}
 
 
 \author{Chia-Chen~Hsu,
@@ -121,7 +121,7 @@ GPGPU, Data Layout Conversion, Heterogeneous System, Memory Locality
 \IEEEpeerreviewmaketitle
 
 
-\IEEEraisesectionheading{\section{Introduction}\label{sec:introduction}}
+\section{Introduction}\label{sec:introduction}
 
 \IEEEPARstart{R}{eal-time} embedded computing demands both high performance and power efficiency,
 as Quality of Service (QoS) and sustainability become its main considerations.
@@ -164,7 +164,7 @@ reshaping storage format. Nevertheless, the most general representing sparse for
 the general agreed suit storage format in GPU is ELLPACK (ELL) \cite{AdELL}\cite{AutoSpMV}.
 Figure \ref{fig:ap_benchmark}(b) evaluates the SpMV kernel applications with COO format compared to ELL format.
 SpMV with storing ELL format matrix achieves 4.77 to 1.22 speed up than COO format, and similar result is also reported in the literature \cite{spmv_CUDA}.
-  \item \textbf{Dynamic programming} Dynamic programming (DP) is a popular technique to solve optimization problems. To perform DP in GPU,
+  \item \textbf{Diagonal stride} Diagonal stride happens in dynamic programming (DP), which is a popular technique to solve optimization problems. To perform DP in GPU,
 developers firstly model the problem by constructing a matrix. Then, GPU threads fill out the matrix
 by traversing from left-top to right-bottom diagonally. Since the memory footprints of GPU threads are
 diagonal strides rather than regular one, such data layout leads to non-coalescing access likewise.
@@ -247,7 +247,7 @@ on NVIDIA GT460 GPU for performance comparison.
 SC transposing attached with transfer operation performs approximately
 68.5 to 2.19 times speed up depending on data size
 over the best available software solution in \cite{ASTA}.
-The memory manager also shows 2.6 to 1.7 times speed up than \cite{Dymaxion} when converting data to diagonal patterns, and shows 2.02 to 1.52 times speed up with stride conversion.
+The memory manager also shows 2.6 to 1.7 times speed up than \cite{Dymaxion} when converting data to diagonal patterns, and shows 2.02 to 1.52 times speed up in CPU and GPU with stride conversion.
 On the side of sparse format conversion, SC performs
 2.42 times in average over other software-based library \cite{Cusp}.
 Moreover, our design
@@ -705,7 +705,7 @@ Transformed data layout stores in the destination memory}
 
 
 \subsection{Stride Converter} \label{Stride}
-Stride converter can gather the data with non-unit stride together. As showed in Figure \ref{fig:Stride}, begin with the $  start $ element, $ W0 $, then skip $ Stride $ elements to the  $ W1 $, over and over. The non-unit stride conversion can be formulated as $dest_layout=start+ stride \times i$. The destination data plane is a subset of the source data with a uniform stride. By remaining and gathering the useful data and discard the useful data, this kind of converter would benefit applications which only use a subset of the source data.
+Stride converter can gather the data with non-unit stride together. As showed in Figure \ref{fig:stride}, begin with the $  start $ element, $ W0 $, then skip $ Stride $ elements to the  $ W1 $, over and over. The non-unit stride conversion can be formulated as $dest_layout=start+ stride \times i$. The destination data plane is a subset of the source data with a uniform stride. By remaining and gathering the useful data and discard the useful data, this kind of converter would benefit applications which only use a subset of the source data.
 
 \begin{figure}[tpb]
 \begin{center}
